@@ -6,6 +6,8 @@ const navItems = [
   { label: 'Dashboard', to: '/dashboard' },
   { label: 'Datos Solares', to: '/solar' },
   { label: 'Rastreo ISS', to: '/observatory' },
+  { label: 'Luna', to: '/moon' },
+  { label: 'Olas del Mar', to: '/marine' },
 ]
 
 const Sidebar = () => {
