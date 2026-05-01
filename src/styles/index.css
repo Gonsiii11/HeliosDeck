@@ -5,22 +5,22 @@
 :root {
   color-scheme: dark;
   font-family: "Space Grotesk", "Eurostile", system-ui, sans-serif;
-  background-color: #070a12;
-  --night: #070a12;
-  --deep: #0d1222;
-  --aurora: #58f2c7;
-  --flare: #ff9f1c;
-  --ion: #62b6ff;
-  --violet: #9b5cff;
+  background-color: #0c1018;
+  --night: #0c1018;
+  --deep: #141b2e;
+  --aurora: #2dd4bf;
+  --flare: #ff6b4a;
+  --ion: #5ab0ff;
+  --sand: #f2c94c;
 }
 
 body {
   @apply text-nebula min-h-screen;
   background-color: var(--night);
-  background-image: radial-gradient(circle at 12% 12%, rgba(98, 182, 255, 0.18), transparent 40%),
-    radial-gradient(circle at 78% 18%, rgba(255, 159, 28, 0.18), transparent 35%),
-    radial-gradient(circle at 22% 80%, rgba(155, 92, 255, 0.16), transparent 40%),
-    linear-gradient(160deg, rgba(8, 12, 22, 0.95), rgba(11, 18, 34, 0.95));
+  background-image: radial-gradient(circle at 12% 10%, rgba(45, 212, 191, 0.2), transparent 38%),
+    radial-gradient(circle at 82% 18%, rgba(255, 107, 74, 0.22), transparent 40%),
+    radial-gradient(circle at 20% 85%, rgba(242, 201, 76, 0.18), transparent 42%),
+    linear-gradient(160deg, rgba(10, 14, 24, 0.96), rgba(16, 21, 36, 0.96));
 }
 
 #root {
@@ -28,20 +28,20 @@ body {
 }
 
 ::selection {
-  background: rgba(88, 242, 199, 0.25);
+  background: rgba(45, 212, 191, 0.28);
 }
 
 .glass-panel {
-  background: rgba(15, 20, 35, 0.78);
-  border: 1px solid rgba(98, 182, 255, 0.2);
-  box-shadow: 0 28px 90px rgba(6, 10, 20, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
+  background: rgba(16, 22, 35, 0.82);
+  border: 1px solid rgba(45, 212, 191, 0.22);
+  box-shadow: 0 30px 90px rgba(8, 12, 22, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(22px);
 }
 
 .grid-glow {
-  background-image: linear-gradient(125deg, rgba(88, 242, 199, 0.08), transparent 60%),
-    radial-gradient(circle at top, rgba(255, 159, 28, 0.2), transparent 60%),
-    radial-gradient(circle at 80% 40%, rgba(98, 182, 255, 0.16), transparent 55%);
+  background-image: linear-gradient(125deg, rgba(45, 212, 191, 0.12), transparent 60%),
+    radial-gradient(circle at top, rgba(255, 107, 74, 0.22), transparent 60%),
+    radial-gradient(circle at 80% 40%, rgba(90, 176, 255, 0.18), transparent 55%);
 }
 
 .aurora-backdrop {
@@ -64,13 +64,13 @@ body {
 .aurora-backdrop::before {
   top: -120px;
   right: -80px;
-  background: radial-gradient(circle, rgba(98, 182, 255, 0.6), transparent 70%);
+  background: radial-gradient(circle, rgba(90, 176, 255, 0.6), transparent 70%);
 }
 
 .aurora-backdrop::after {
   bottom: -140px;
   left: -100px;
-  background: radial-gradient(circle, rgba(255, 159, 28, 0.55), transparent 70%);
+  background: radial-gradient(circle, rgba(255, 107, 74, 0.55), transparent 70%);
 }
 
 .panel-sheen {
@@ -82,7 +82,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 35%, transparent 70%, rgba(88, 242, 199, 0.08));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 35%, transparent 70%, rgba(45, 212, 191, 0.12));
   opacity: 0.6;
   pointer-events: none;
   z-index: 0;
@@ -94,7 +94,7 @@ body {
 }
 
 .pulse-ring {
-  box-shadow: 0 0 0 0 rgba(255, 159, 28, 0.4);
+  box-shadow: 0 0 0 0 rgba(255, 107, 74, 0.45);
 }
 
 @keyframes draw {

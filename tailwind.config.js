@@ -4,21 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#0d1117',
-        nebula: '#f5f7ff',
-        aurora: '#58f2c7',
-        flare: '#ff9f1c',
-        magneto: '#2a2f4a',
+        ink: '#0c1018',
+        nebula: '#f5efe6',
+        aurora: '#2dd4bf',
+        flare: '#ff6b4a',
+        magneto: '#1e2538',
+        sand: '#f2c94c',
+        sky: '#5ab0ff',
       },
       fontFamily: {
         display: ['"Space Grotesk"', '"Eurostile"', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', '"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       boxShadow: {
-        glow: '0 0 40px rgba(88, 242, 199, 0.2)',
+        glow: '0 0 40px rgba(45, 212, 191, 0.25)',
       },
       backgroundImage: {
-        'starlight': 'radial-gradient(circle at 12% 20%, rgba(88, 242, 199, 0.25), transparent 40%), radial-gradient(circle at 80% 0%, rgba(255, 159, 28, 0.18), transparent 45%), linear-gradient(135deg, rgba(10, 12, 18, 0.96), rgba(18, 21, 33, 0.98))',
+        'starlight': 'radial-gradient(circle at 10% 20%, rgba(45, 212, 191, 0.22), transparent 38%), radial-gradient(circle at 85% 5%, rgba(255, 107, 74, 0.2), transparent 42%), linear-gradient(145deg, rgba(8, 12, 18, 0.96), rgba(15, 20, 34, 0.98))',
       },
     },
   },

@@ -16,7 +16,7 @@ const Sidebar = () => {
   return (
     <aside className="glass-panel flex h-full w-full flex-col gap-6 rounded-3xl p-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.35em] text-aurora/60">Geo-Physical</p>
+        <p className="text-xs uppercase tracking-[0.35em] text-aurora/70">Geo-Physical</p>
         <h1 className="text-2xl font-semibold text-nebula">Cosmic Aggregator</h1>
       </div>
 
@@ -28,8 +28,8 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center justify-between rounded-2xl px-4 py-3 text-sm transition ${
                 isActive
-                  ? 'bg-aurora/15 text-aurora shadow-glow'
-                  : 'text-nebula/70 hover:bg-white/5'
+                  ? 'bg-flare/15 text-flare shadow-glow'
+                  : 'text-nebula/70 hover:bg-aurora/10'
               }`
             }
           >
