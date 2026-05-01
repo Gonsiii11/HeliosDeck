@@ -5,11 +5,22 @@
 :root {
   color-scheme: dark;
   font-family: "Space Grotesk", "Eurostile", system-ui, sans-serif;
-  background-color: #0b0f16;
+  background-color: #070a12;
+  --night: #070a12;
+  --deep: #0d1222;
+  --aurora: #58f2c7;
+  --flare: #ff9f1c;
+  --ion: #62b6ff;
+  --violet: #9b5cff;
 }
 
 body {
-  @apply bg-starlight text-nebula min-h-screen;
+  @apply text-nebula min-h-screen;
+  background-color: var(--night);
+  background-image: radial-gradient(circle at 12% 12%, rgba(98, 182, 255, 0.18), transparent 40%),
+    radial-gradient(circle at 78% 18%, rgba(255, 159, 28, 0.18), transparent 35%),
+    radial-gradient(circle at 22% 80%, rgba(155, 92, 255, 0.16), transparent 40%),
+    linear-gradient(160deg, rgba(8, 12, 22, 0.95), rgba(11, 18, 34, 0.95));
 }
 
 #root {
@@ -21,15 +32,65 @@ body {
 }
 
 .glass-panel {
-  background: rgba(16, 19, 30, 0.75);
-  border: 1px solid rgba(88, 242, 199, 0.15);
-  box-shadow: 0 24px 80px rgba(4, 8, 18, 0.6);
-  backdrop-filter: blur(18px);
+  background: rgba(15, 20, 35, 0.78);
+  border: 1px solid rgba(98, 182, 255, 0.2);
+  box-shadow: 0 28px 90px rgba(6, 10, 20, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
 }
 
 .grid-glow {
-  background-image: linear-gradient(120deg, rgba(88, 242, 199, 0.06), transparent 60%),
-    radial-gradient(circle at top, rgba(255, 159, 28, 0.12), transparent 58%);
+  background-image: linear-gradient(125deg, rgba(88, 242, 199, 0.08), transparent 60%),
+    radial-gradient(circle at top, rgba(255, 159, 28, 0.2), transparent 60%),
+    radial-gradient(circle at 80% 40%, rgba(98, 182, 255, 0.16), transparent 55%);
+}
+
+.aurora-backdrop {
+  position: relative;
+  overflow: hidden;
+}
+
+.aurora-backdrop::before,
+.aurora-backdrop::after {
+  content: '';
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.aurora-backdrop::before {
+  top: -120px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(98, 182, 255, 0.6), transparent 70%);
+}
+
+.aurora-backdrop::after {
+  bottom: -140px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(255, 159, 28, 0.55), transparent 70%);
+}
+
+.panel-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.panel-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 35%, transparent 70%, rgba(88, 242, 199, 0.08));
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.panel-sheen > * {
+  position: relative;
+  z-index: 1;
 }
 
 .pulse-ring {

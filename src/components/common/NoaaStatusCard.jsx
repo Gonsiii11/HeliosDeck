@@ -38,7 +38,7 @@ const NoaaStatusCard = () => {
   const magTime = status?.magTime
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+    <div className="panel-sheen rounded-2xl border border-white/10 bg-white/5 p-5">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-nebula/60">NOAA SWPC</p>
