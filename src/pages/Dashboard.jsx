@@ -1,6 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import NoaaStatusCard from '../components/common/NoaaStatusCard'
+import NoaaForecastCard from '../components/common/NoaaForecastCard'
+import NoaaAlertsCard from '../components/common/NoaaAlertsCard'
 import WidgetCard from '../components/common/WidgetCard'
 
 const Dashboard = () => (
@@ -21,6 +23,8 @@ const Dashboard = () => (
 
     <div className="grid gap-5 lg:grid-cols-3">
       <NoaaStatusCard />
+      <NoaaForecastCard />
+      <NoaaAlertsCard />
 
       <WidgetCard title="Telemetria integradora" subtitle="Sistema">
         <div className="space-y-3 text-sm text-nebula/70">

@@ -34,6 +34,8 @@ const NoaaStatusCard = () => {
 
   const kpIndex = status?.kpIndex
   const isStorm = typeof kpIndex === 'number' && kpIndex >= 5
+  const windTime = status?.windTime ?? status?.kpTime
+  const magTime = status?.magTime
 
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
@@ -56,16 +58,36 @@ const NoaaStatusCard = () => {
           <div className="flex items-center justify-between">
             <span>Viento solar</span>
             <span className="text-nebula">
-              {status?.windSpeed ? `${status.windSpeed} km/s` : '--'}
+              {typeof status?.windSpeed === 'number' ? `${status.windSpeed} km/s` : '--'}
             </span>
           </div>
           <div className="flex items-center justify-between">
             <span>Densidad</span>
             <span className="text-nebula">
-              {status?.windDensity ? `${status.windDensity} p/cm3` : '--'}
+              {typeof status?.windDensity === 'number' ? `${status.windDensity} p/cm3` : '--'}
             </span>
           </div>
-          <p className="text-xs text-nebula/40">Actualizado: {status?.kpTime ?? '--'}</p>
+          <div className="flex items-center justify-between">
+            <span>Temperatura</span>
+            <span className="text-nebula">
+              {typeof status?.windTemperature === 'number'
+                ? `${status.windTemperature} K`
+                : '--'}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span>Bz (GSM)</span>
+            <span className="text-nebula">
+              {typeof status?.bzGsm === 'number' ? `${status.bzGsm} nT` : '--'}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span>Bt</span>
+            <span className="text-nebula">
+              {typeof status?.bt === 'number' ? `${status.bt} nT` : '--'}
+            </span>
+          </div>
+          <p className="text-xs text-nebula/40">Actualizado: {windTime ?? magTime ?? '--'}</p>
         </div>
       )}
     </div>
