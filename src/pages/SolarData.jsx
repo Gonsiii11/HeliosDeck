@@ -67,6 +67,8 @@ const SolarData = () => {
           <p className="text-sm text-nebula/60">Cargando NASA POWER...</p>
         ) : error ? (
           <p className="text-sm text-flare">{error}</p>
+        ) : data.length === 0 ? (
+          <p className="text-sm text-nebula/60">Sin datos disponibles para la fecha seleccionada.</p>
         ) : (
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
