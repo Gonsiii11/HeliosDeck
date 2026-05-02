@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import WidgetCard from '../components/common/WidgetCard'
 import { fetchMoonData } from '../services/moon'
 
 const getPhaseLabel = (angle) => {
@@ -64,44 +63,53 @@ const Moon = () => {
       className="space-y-6"
     >
       <header className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.35em] text-aurora/70">Ciclo lunar</p>
-        <h2 className="text-2xl font-semibold">Luna y visibilidad</h2>
-        <p className="text-sm text-nebula/70">
+        <p className="text-label font-label uppercase tracking-widest text-on-surface-variant">
+          Ciclo lunar
+        </p>
+        <h2 className="text-h2 font-h2 text-on-surface">Luna y visibilidad</h2>
+        <p className="text-body-sm font-body-sm text-on-surface-variant">
           Ephemerides diarias para monitorear fase y horarios.
         </p>
       </header>
 
-      <WidgetCard title="Estado lunar" subtitle="Moonrise/Moonset">
+      <div className="glass-card rounded-xl p-lg">
+        <div className="mb-md">
+          <p className="text-label font-label uppercase tracking-widest text-on-surface-variant">
+            Moonrise/Moonset
+          </p>
+          <h3 className="text-h3 font-h3 text-on-surface">Estado lunar</h3>
+        </div>
+
         {loading ? (
-          <p className="text-sm text-nebula/60">Cargando...</p>
+          <p className="text-body-sm font-body-sm text-on-surface-variant">Cargando...</p>
         ) : error ? (
-          <p className="text-sm text-flare">{error}</p>
+          <p className="text-body-sm font-body-sm text-error">{error}</p>
         ) : (
-          <div className="space-y-3 text-sm text-nebula/70">
+          <div className="space-y-3 text-body-sm font-body-sm text-on-surface-variant">
             <div className="flex items-center justify-between">
               <span>Fase</span>
-              <span className="text-nebula">{getPhaseLabel(status?.moonphase)}</span>
+              <span className="text-on-surface">{getPhaseLabel(status?.moonphase)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Angulo fase</span>
-              <span className="text-nebula">
+              <span className="text-on-surface">
                 {Number.isFinite(status?.moonphase) ? `${status.moonphase} deg` : '--'}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span>Salida</span>
-              <span className="text-nebula">{formatTime(status?.moonrise)}</span>
+              <span className="text-on-surface">{formatTime(status?.moonrise)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Puesta</span>
-              <span className="text-nebula">{formatTime(status?.moonset)}</span>
+              <span className="text-on-surface">{formatTime(status?.moonset)}</span>
             </div>
-            <p className="text-xs text-nebula/40">
+            <p className="text-xs text-on-surface-variant">
               Coordenadas: {status?.latitude ?? '--'}, {status?.longitude ?? '--'}
             </p>
           </div>
         )}
-      </WidgetCard>
+      </div>
     </motion.div>
   )
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import WidgetCard from '../components/common/WidgetCard'
 import { fetchMarineWaves } from '../services/marine'
 
 const formatValue = (value, unit) =>
@@ -50,49 +49,54 @@ const Marine = () => {
       className="space-y-6"
     >
       <header className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.35em] text-aurora/70">Oceano</p>
-        <h2 className="text-2xl font-semibold">Olas y energia marina</h2>
-        <p className="text-sm text-nebula/70">
+        <p className="text-label font-label uppercase tracking-widest text-on-surface-variant">
+          Oceano
+        </p>
+        <h2 className="text-h2 font-h2 text-on-surface">Olas y energia marina</h2>
+        <p className="text-body-sm font-body-sm text-on-surface-variant">
           Lecturas horarias para altura y periodo de oleaje.
         </p>
       </header>
 
-      <WidgetCard title="Oleaje reciente" subtitle="Open-Meteo Marine">
+      <div className="glass-card rounded-xl p-lg">
+        <div className="mb-md flex items-center justify-between">
+          <div>
+            <p className="text-label font-label uppercase tracking-widest text-on-surface-variant">
+              Open-Meteo Marine
+            </p>
+            <h3 className="text-h3 font-h3 text-on-surface">Oleaje reciente</h3>
+          </div>
+        </div>
+
         {loading ? (
-          <p className="text-sm text-nebula/60">Cargando...</p>
+          <p className="text-body-sm font-body-sm text-on-surface-variant">Cargando...</p>
         ) : error ? (
-          <p className="text-sm text-flare">{error}</p>
+          <p className="text-body-sm font-body-sm text-error">{error}</p>
         ) : (
-          <div className="space-y-3 text-sm text-nebula/70">
+          <div className="space-y-3 text-body-sm font-body-sm text-on-surface-variant">
             <div className="flex items-center justify-between">
               <span>Altura ola</span>
-              <span className="text-nebula">{formatValue(status?.waveHeight, 'm')}</span>
+              <span className="text-on-surface">{formatValue(status?.waveHeight, 'm')}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Periodo</span>
-              <span className="text-nebula">{formatValue(status?.wavePeriod, 's')}</span>
+              <span className="text-on-surface">{formatValue(status?.wavePeriod, 's')}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Ola viento</span>
-              <span className="text-nebula">
-                {formatValue(status?.windWaveHeight, 'm')}
-              </span>
+              <span className="text-on-surface">{formatValue(status?.windWaveHeight, 'm')}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Ola swell</span>
-              <span className="text-nebula">
-                {formatValue(status?.swellWaveHeight, 'm')}
-              </span>
+              <span className="text-on-surface">{formatValue(status?.swellWaveHeight, 'm')}</span>
             </div>
-            <p className="text-xs text-nebula/40">
-              Actualizado: {status?.time ?? '--'}
-            </p>
-            <p className="text-xs text-nebula/40">
+            <p className="text-xs text-on-surface-variant">Actualizado: {status?.time ?? '--'}</p>
+            <p className="text-xs text-on-surface-variant">
               Coordenadas: {status?.latitude ?? '--'}, {status?.longitude ?? '--'}
             </p>
           </div>
         )}
-      </WidgetCard>
+      </div>
     </motion.div>
   )
 }

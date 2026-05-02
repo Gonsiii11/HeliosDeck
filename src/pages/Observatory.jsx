@@ -41,39 +41,41 @@ const Observatory = () => {
       className="space-y-6"
     >
       <header className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.35em] text-aurora/70">Observatorio orbital</p>
-        <h2 className="text-2xl font-semibold">Rastreo ISS</h2>
-        <p className="text-sm text-nebula/70">
+        <p className="text-label font-label uppercase tracking-widest text-on-surface-variant">
+          Observatorio orbital
+        </p>
+        <h2 className="text-h2 font-h2 text-on-surface">Rastreo ISS</h2>
+        <p className="text-body-sm font-body-sm text-on-surface-variant">
           Coordenadas en vivo con actualizacion cada 10 segundos.
         </p>
       </header>
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+      <div className="glass-card rounded-xl p-lg">
         {error ? (
-          <p className="text-sm text-flare">{error}</p>
+          <p className="text-body-sm font-body-sm text-error">{error}</p>
         ) : (
-          <div className="grid gap-3 text-sm text-nebula/70">
+          <div className="grid gap-3 text-body-sm font-body-sm text-on-surface-variant">
             <div className="flex items-center justify-between">
               <span>Latitud</span>
-              <span className="text-nebula">{status?.latitude?.toFixed(3) ?? '--'}</span>
+              <span className="text-on-surface">{status?.latitude?.toFixed(3) ?? '--'}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Longitud</span>
-              <span className="text-nebula">{status?.longitude?.toFixed(3) ?? '--'}</span>
+              <span className="text-on-surface">{status?.longitude?.toFixed(3) ?? '--'}</span>
             </div>
             <div className="flex items-center justify-between">
               <span>Altitud</span>
-              <span className="text-nebula">
+              <span className="text-on-surface">
                 {status?.altitude ? `${status.altitude.toFixed(1)} km` : '--'}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span>Velocidad</span>
-              <span className="text-nebula">
+              <span className="text-on-surface">
                 {status?.velocity ? `${status.velocity.toFixed(1)} km/h` : '--'}
               </span>
             </div>
-            <p className="text-xs text-nebula/40">
+            <p className="text-xs text-on-surface-variant">
               Actualizado: {status?.timestamp ? new Date(status.timestamp * 1000).toUTCString() : '--'}
             </p>
           </div>
