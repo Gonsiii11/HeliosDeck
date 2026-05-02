@@ -6,7 +6,7 @@ const navItems = [
   { label: 'Solar', to: '/solar', icon: 'flare' },
   { label: 'ISS', to: '/observatory', icon: 'satellite_alt' },
   { label: 'Moon', to: '/moon', icon: 'dark_mode' },
-  { label: 'Marine', to: '/marine', icon: 'water_drop' },
+  { label: 'Explore', to: '/explore', icon: 'public' },
 ]
 
 const Sidebar = () => (

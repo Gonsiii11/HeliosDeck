@@ -32,6 +32,84 @@ const extractAlertTitle = (message = '') => {
   return lines[0] ?? ''
 }
 
+const parseTime = (value) => {
+  if (!value) return null
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+const filterByHours = (rows, hours) => {
+  if (!Number.isFinite(hours) || hours <= 0) return rows
+  const cutoff = Date.now() - hours * 60 * 60 * 1000
+  return rows.filter((item) => item?.timestamp && item.timestamp >= cutoff)
+}
+
+const normalizeKpSeries = (kpData) => {
+  if (!Array.isArray(kpData)) return []
+  return kpData
+    .filter((entry) => entry?.time_tag)
+    .map((entry) => {
+      const date = parseTime(entry.time_tag)
+      return {
+        time: entry.time_tag,
+        timestamp: date ? date.getTime() : null,
+        kp: Number(entry.Kp),
+      }
+    })
+    .filter((entry) => Number.isFinite(entry.kp) && entry.timestamp)
+}
+
+const normalizePlasmaSeries = (rows) => {
+  if (!Array.isArray(rows) || rows.length < 2) return []
+
+  return rows
+    .slice(1)
+    .map((row) => {
+      if (!Array.isArray(row) || row.length < 4) return null
+      const date = parseTime(row[0])
+      return {
+        time: row[0],
+        timestamp: date ? date.getTime() : null,
+        density: Number(row[1]),
+        speed: Number(row[2]),
+      }
+    })
+    .filter((entry) => entry && entry.timestamp && Number.isFinite(entry.speed))
+}
+
+export const fetchNoaaTimeSeries = async ({ hours = 24 } = {}) => {
+  const [kpResponse, plasmaResponse] = await Promise.all([
+    fetch(KP_URL),
+    fetch(PLASMA_URL),
+  ])
+
+  if (!kpResponse.ok || !plasmaResponse.ok) {
+    throw new Error('NOAA series fetch failed')
+  }
+
+  const kpData = await kpResponse.json()
+  const plasmaData = await plasmaResponse.json()
+
+  const kpSeries = filterByHours(normalizeKpSeries(kpData), hours)
+  const plasmaSeries = filterByHours(normalizePlasmaSeries(plasmaData), hours)
+
+  const merged = new Map()
+  kpSeries.forEach((entry) => {
+    merged.set(entry.time, { time: entry.time, timestamp: entry.timestamp, kp: entry.kp })
+  })
+
+  plasmaSeries.forEach((entry) => {
+    if (!merged.has(entry.time)) {
+      merged.set(entry.time, { time: entry.time, timestamp: entry.timestamp })
+    }
+    const item = merged.get(entry.time)
+    item.windSpeed = entry.speed
+    item.windDensity = entry.density
+  })
+
+  return Array.from(merged.values()).sort((a, b) => a.timestamp - b.timestamp)
+}
+
 export const fetchNoaaSpaceWeather = async () => {
   const [kpResponse, plasmaResponse, magResponse] = await Promise.all([
     fetch(KP_URL),

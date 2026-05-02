@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { fetchIssPosition } from '../services/iss'
+import IssMap from '../components/common/IssMap'
 
 const Observatory = () => {
   const [status, setStatus] = useState(null)
@@ -80,6 +81,16 @@ const Observatory = () => {
             </p>
           </div>
         )}
+      </div>
+
+      <div className="glass-card rounded-xl p-lg">
+        <div className="mb-md">
+          <p className="text-label font-label uppercase tracking-widest text-on-surface-variant">
+            Trayectoria orbital
+          </p>
+          <h3 className="text-h3 font-h3 text-on-surface">Ultimos 90 minutos</h3>
+        </div>
+        <IssMap />
       </div>
     </motion.div>
   )

@@ -15,6 +15,7 @@ const SolarTrendCard = ({
   longitude = -99.13,
   title = 'Solar Irradiance Trend',
   subtitle = 'NASA POWER',
+  locationLabel,
 }) => {
   const [data, setData] = useState([])
   const [error, setError] = useState(null)
@@ -110,6 +111,7 @@ const SolarTrendCard = ({
 
       <div className="mt-lg border-t border-white/5 pt-md text-body-sm font-body-sm text-on-surface-variant">
         {title}
+        {locationLabel ? ` • ${locationLabel}` : ''}
         {updatedAt ? ` • Updated ${updatedAt.toLocaleTimeString()}` : ''}
       </div>
     </div>

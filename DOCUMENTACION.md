@@ -47,6 +47,8 @@ Aplicacion de dashboard cientifico construida con React y Tailwind. Incluye ruta
 
 ## Componentes clave
 - Sidebar con enlaces a Dashboard, Datos Solares, Rastreo ISS, Luna y Olas del Mar.
+- Filtros globales con rango de tiempo, fuentes activas y ubicaciones persistidas en URL/sessionStorage.
+- Selector de ubicaciones con favoritos y busqueda via Open-Meteo Geocoding.
 - `NoaaStatusCard` con indicador animado (Kp >= 5) y metricas extendidas.
 - `NoaaForecastCard` y `NoaaAlertsCard` para pronostico y alertas.
 - `ParticleField` para el fondo de particulas del login.
@@ -55,12 +57,22 @@ Aplicacion de dashboard cientifico construida con React y Tailwind. Incluye ruta
 - Panel lunar con fase y horarios.
 - Panel marino con oleaje.
 - Panel orbital con coordenadas ISS en vivo.
+- Comparativas multi-region para irradiancia y oleaje (hasta 3 ubicaciones).
+- Exportacion JSON por panel para series y comparativas.
 
 ## Ejecutar en local
 1. Instalar dependencias: `npm install`.
 2. Iniciar dev server: `npm run dev`.
 
 ## Siguientes pasos sugeridos
-- Integrar seleccion de ubicaciones para datos solares y marinos.
-- Agregar mapa orbital para la trayectoria de la ISS.
-- Incluir graficas temporales en el dashboard para Kp y viento solar.
+- [x] Integrar seleccion de ubicaciones para datos solares y marinos (paises, ciudades, coordenadas guardadas).
+- [x] Agregar mapa orbital para la trayectoria de la ISS con historial de los ultimos 90 minutos.
+- [x] Incluir graficas temporales en el dashboard para Kp, viento solar y densidad.
+- [x] Crear filtros globales por rango de tiempo, fuente y region (persistidos en URL y sessionStorage).
+- [x] Habilitar comparativas multi-region (hasta 3 ubicaciones) en solar y marino.
+- [x] Agregar selector rapido de estaciones o paises con favoritos.
+- [x] Incluir tarjetas de alertas configurables por umbral (Kp, altura de ola, irradiancia).
+- [x] Crear modo de exploracion con mapas y capas (Kp global, oleaje, nubosidad).
+- [x] Agregar tooltips ricos con descripcion de cada metrica y unidades.
+- [x] Incorporar panel de actividad con eventos recientes y estado de sincronizacion.
+- [x] Añadir exportacion de datos (CSV/JSON) por panel.

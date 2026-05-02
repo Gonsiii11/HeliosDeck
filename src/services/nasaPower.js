@@ -1,5 +1,6 @@
 const BASE_URL = 'https://power.larc.nasa.gov/api/temporal/hourly/point'
 const PARAM = 'ALLSKY_SFC_SW_DWN'
+const CACHE_PREFIX = 'gca-nasa-irradiance'
 
 const formatDate = (date) => date.toISOString().slice(0, 10).replace(/-/g, '')
 
@@ -25,8 +26,31 @@ const buildPoints = (series) =>
     .sort((a, b) => a.key.localeCompare(b.key))
     .map(({ time, value }) => ({ time, value }))
 
+const getCacheKey = ({ latitude, longitude }) =>
+  `${CACHE_PREFIX}:${Number(latitude).toFixed(2)}:${Number(longitude).toFixed(2)}`
+
+const readCache = (key) => {
+  try {
+    const raw = sessionStorage.getItem(key)
+    if (!raw) return null
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
+}
+
+const writeCache = (key, payload) => {
+  try {
+    sessionStorage.setItem(key, JSON.stringify(payload))
+  } catch {
+    // ignore cache write failures
+  }
+}
+
 export const fetchNasaIrradiance = async ({ latitude = 0, longitude = 0 } = {}) => {
   const maxAttempts = 5
+  const cacheKey = getCacheKey({ latitude, longitude })
+  const cached = readCache(cacheKey)
 
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     const { start, end } = getLastCompleteUtcDayRange(1 + attempt * 365)
@@ -42,6 +66,9 @@ export const fetchNasaIrradiance = async ({ latitude = 0, longitude = 0 } = {}) 
 
     const response = await fetch(url.toString())
     if (!response.ok) {
+      if (cached) {
+        return cached
+      }
       throw new Error('NASA POWER data fetch failed')
     }
 
@@ -50,9 +77,11 @@ export const fetchNasaIrradiance = async ({ latitude = 0, longitude = 0 } = {}) 
     const points = buildPoints(series)
 
     if (points.length > 0) {
-      return { points, latitude, longitude }
+      const result = { points, latitude, longitude }
+      writeCache(cacheKey, result)
+      return result
     }
   }
 
-  return { points: [], latitude, longitude }
+  return cached || { points: [], latitude, longitude }
 }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "framer-motion": "^11.3.19",
+    "maplibre-gl": "^4.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.26.2",
