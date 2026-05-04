@@ -16,13 +16,10 @@ import ThresholdAlertCard from '../components/common/ThresholdAlertCard'
 import ActivityPanel from '../components/common/ActivityPanel'
 import ExportButton from '../components/common/ExportButton'
 import SurfaceWeatherCard from '../components/common/SurfaceWeatherCard'
-import AirQualityCard from '../components/common/AirQualityCard'
-import SatelliteSnapshotCard from '../components/common/SatelliteSnapshotCard'
 import { fetchNoaaKpForecast, fetchNoaaSpaceWeather, fetchNoaaTimeSeries } from '../services/noaa'
 import { fetchIssPosition } from '../services/iss'
 import { fetchNasaIrradiance } from '../services/nasaPower'
 import { fetchSurfaceWeather } from '../services/weather'
-import { fetchAirQuality } from '../services/airQuality'
 import { buildLocationLabel } from '../data/locations'
 import { useFilters } from '../contexts/FiltersContext'
 
@@ -63,10 +60,6 @@ const Dashboard = () => {
   const [surfaceWeather, setSurfaceWeather] = useState(null)
   const [surfaceWeatherError, setSurfaceWeatherError] = useState(null)
   const [surfaceWeatherLoading, setSurfaceWeatherLoading] = useState(true)
-
-  const [airQuality, setAirQuality] = useState(null)
-  const [airQualityError, setAirQualityError] = useState(null)
-  const [airQualityLoading, setAirQualityLoading] = useState(true)
 
   const [iss, setIss] = useState(null)
   const [issError, setIssError] = useState(null)
@@ -280,39 +273,6 @@ const Dashboard = () => {
 
     const load = async () => {
       try {
-        const data = await fetchAirQuality({
-          latitude: primaryLocation?.latitude,
-          longitude: primaryLocation?.longitude,
-        })
-        if (isMounted) {
-          setAirQuality(data)
-          setAirQualityError(null)
-        }
-      } catch (err) {
-        if (isMounted) {
-          setAirQualityError('No disponible')
-        }
-      } finally {
-        if (isMounted) {
-          setAirQualityLoading(false)
-        }
-      }
-    }
-
-    load()
-    const interval = setInterval(load, 600000)
-
-    return () => {
-      isMounted = false
-      clearInterval(interval)
-    }
-  }, [primaryLocation])
-
-  useEffect(() => {
-    let isMounted = true
-
-    const load = async () => {
-      try {
         const data = await fetchIssPosition()
         if (isMounted) {
           setIss(data)
@@ -363,8 +323,9 @@ const Dashboard = () => {
       </header>
 
       <div className="grid grid-cols-12 gap-bento-gap">
+        {/* Fila 1: Solar Trend */}
         {sources.nasa ? (
-          <div className="col-span-12 lg:col-span-8">
+          <div className="col-span-12">
             <SolarTrendCard
               title="Solar Irradiance Trend"
               subtitle="NASA POWER"
@@ -375,8 +336,9 @@ const Dashboard = () => {
           </div>
         ) : null}
 
+        {/* Fila 2: Kp Index + Surface Weather */}
         {sources.noaa ? (
-          <div className="col-span-12 md:col-span-6 lg:col-span-4">
+          <div className="col-span-12 md:col-span-6">
             <div className="glass-card flex flex-col items-center justify-center rounded-xl p-lg text-center">
               <div className="mb-md flex w-full items-center gap-sm text-left">
                 <span className="material-symbols-outlined text-tertiary">tsunami</span>
@@ -442,7 +404,7 @@ const Dashboard = () => {
           </div>
         ) : null}
 
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
+        <div className="col-span-12 md:col-span-6">
           <SurfaceWeatherCard
             data={surfaceWeather}
             loading={surfaceWeatherLoading}
@@ -451,17 +413,9 @@ const Dashboard = () => {
           />
         </div>
 
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
-          <AirQualityCard
-            data={airQuality}
-            loading={airQualityLoading}
-            error={airQualityError}
-            locationLabel={buildLocationLabel(primaryLocation)}
-          />
-        </div>
-
+        {/* Fila 3: Tendencias solares */}
         {sources.noaa ? (
-          <div className="col-span-12 lg:col-span-8">
+          <div className="col-span-12">
             <div className="glass-card flex min-h-[360px] flex-col rounded-xl p-lg">
               <div className="mb-lg flex items-center justify-between">
                 <div>
@@ -521,8 +475,9 @@ const Dashboard = () => {
           </div>
         ) : null}
 
+        {/* Fila 4: Forecast */}
         {sources.noaa ? (
-          <div className="col-span-12 lg:col-span-8">
+          <div className="col-span-12">
             <div className="glass-card overflow-hidden rounded-xl">
               <div className="flex items-center justify-between border-b border-white/10 p-md">
                 <span className="text-label font-label uppercase tracking-widest text-on-surface-variant">
@@ -593,7 +548,8 @@ const Dashboard = () => {
           </div>
         ) : null}
 
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
+        {/* Fila 5: Threshold Alert + Activity Panel */}
+        <div className="col-span-12 md:col-span-6">
           <ThresholdAlertCard
             current={{
               kp: kpValue,
@@ -602,14 +558,11 @@ const Dashboard = () => {
           />
         </div>
 
-        <div className="col-span-12 lg:col-span-8">
-          <SatelliteSnapshotCard />
-        </div>
-
-        <div className="col-span-12 md:col-span-6 lg:col-span-4">
+        <div className="col-span-12 md:col-span-6">
           <ActivityPanel events={activity} />
         </div>
 
+        {/* Fila 6: ISS Telemetry */}
         <div className="col-span-12">
           <div className="glass-card group relative h-64 overflow-hidden rounded-xl p-lg">
             <img
