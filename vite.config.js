@@ -7,11 +7,19 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'framer-motion': ['framer-motion'],
-          'recharts': ['recharts'],
-          'maplibre': ['maplibre-gl'],
+        manualChunks: (id) => {
+          if (id.includes('node_modules/react')) {
+            return 'react-vendor'
+          }
+          if (id.includes('node_modules/framer-motion')) {
+            return 'framer-motion'
+          }
+          if (id.includes('node_modules/recharts')) {
+            return 'recharts'
+          }
+          if (id.includes('node_modules/maplibre-gl')) {
+            return 'maplibre'
+          }
         }
       }
     },
