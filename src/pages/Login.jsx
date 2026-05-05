@@ -64,10 +64,14 @@ const Login = () => {
           <LoginForm onSubmit={handleLogin} isPending={isLoading} error={error} />
         </div>
 
-        <p className="mt-4 text-xs text-slate-400">
-          💡 Tip: Try <code className="bg-slate-100/10 px-1 rounded">emilys</code> / <code className="bg-slate-100/10 px-1 rounded">emilyspass</code> or any username from dummyjson with
-          <code className="bg-slate-100/10 px-1 rounded">pass</code> as password
-        </p>
+        <motion.p 
+          className="mt-5 text-body-sm font-body-sm text-on-surface-variant"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          💡 Tip: <code className="bg-aurora/10 px-2 py-1 rounded border border-aurora/30 text-aurora">emilys</code> / <code className="bg-aurora/10 px-2 py-1 rounded border border-aurora/30 text-aurora">emilyspass</code>
+        </motion.p>
       </div>
     </motion.div>
   )
