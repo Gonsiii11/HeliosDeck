@@ -1,39 +1,87 @@
-import React, { createContext, useContext, useMemo, useState } from 'react'
+// src/contexts/AuthContext.jsx
+// AuthProvider owns the auth state machine for the whole app.
+// Access pattern: const { user, isLoading, error, login, logout } = useAuth();
+//
+// Token strategy:
+//   - accessToken lives ONLY in this provider's state (React memory, not localStorage)
+//   - refreshToken is persisted to localStorage so the session survives reload
+//   - On mount we attempt /auth/refresh + /auth/me — never trust localStorage as truth
+
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import * as authApi from '../services/authApi'
+import { tokenStorage } from '../services/tokenStorage'
 
 const AuthContext = createContext(null)
-const STORAGE_KEY = 'gca-auth'
 
-const readInitialState = () => {
-  const raw = sessionStorage.getItem(STORAGE_KEY)
-  if (!raw) return { isAuthenticated: false, user: null }
-  try {
-    return JSON.parse(raw)
-  } catch {
-    return { isAuthenticated: false, user: null }
-  }
-}
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null)
+  const [accessToken, setAccessToken] = useState(null)
+  const [isLoading, setIsLoading] = useState(true) // initializing on mount
+  const [error, setError] = useState(null)
 
-export const AuthProvider = ({ children }) => {
-  const [authState, setAuthState] = useState(readInitialState)
+  // Restore session on mount: refresh-token → access-token → /auth/me
+  useEffect(() => {
+    const stored = tokenStorage.getRefreshToken()
+    if (!stored) {
+      setIsLoading(false)
+      return
+    }
+    ;(async () => {
+      try {
+        const tokens = await authApi.refresh(stored)
+        const me = await authApi.getMe(tokens.accessToken)
+        setAccessToken(tokens.accessToken)
+        tokenStorage.setRefreshToken(tokens.refreshToken)
+        setUser(me)
+      } catch {
+        // refresh token expired or revoked → fully clear
+        tokenStorage.clear()
+      } finally {
+        setIsLoading(false)
+      }
+    })()
+  }, [])
 
-  const login = (payload) => {
-    const nextState = { isAuthenticated: true, user: payload }
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(nextState))
-    setAuthState(nextState)
-  }
+  const login = useCallback(async (username, password) => {
+    setError(null)
+    setIsLoading(true)
+    try {
+      const result = await authApi.login({ username, password })
+      setAccessToken(result.accessToken)
+      tokenStorage.setRefreshToken(result.refreshToken)
+      // The login endpoint does NOT return `role` — only /auth/me does.
+      // Fetch the full profile so user.role is available immediately.
+      const me = await authApi.getMe(result.accessToken)
+      setUser(me)
+      return me
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
-  const logout = () => {
-    sessionStorage.removeItem(STORAGE_KEY)
-    setAuthState({ isAuthenticated: false, user: null })
-  }
+  const logout = useCallback(() => {
+    setUser(null)
+    setAccessToken(null)
+    setError(null)
+    tokenStorage.clear()
+  }, [])
 
-  const value = useMemo(() => ({ ...authState, login, logout }), [authState])
+  // Used by the refresh-on-401 helper (future) to push fresh tokens back
+  // into the source of truth after a successful refresh.
+  const updateTokens = useCallback(({ accessToken: newAccess, refreshToken: newRefresh }) => {
+    setAccessToken(newAccess)
+    if (newRefresh) tokenStorage.setRefreshToken(newRefresh)
+  }, [])
 
+  const value = { user, accessToken, isLoading, error, login, logout, updateTokens }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) throw new Error('useAuth must be used within AuthProvider')
-  return context
+export function useAuth() {
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error('useAuth must be used inside <AuthProvider>')
+  return ctx
 }
