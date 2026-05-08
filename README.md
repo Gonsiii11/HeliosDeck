@@ -1,6 +1,6 @@
 # Geo-Physical Cosmic Aggregator 🌍🛰️
 
-Dashboard científico interactivo que agrega datos de clima espacial, radiación solar, órbita de la ISS y oceanografía desde múltiples APIs públicas.
+Dashboard científico interactivo que agrega datos de clima espacial, radiación solar, órbita de la ISS y datos lunares desde múltiples APIs públicas.
 
 ## ✨ Características Principales
 
@@ -8,7 +8,6 @@ Dashboard científico interactivo que agrega datos de clima espacial, radiación
 - ☀️ **Irradiancia Solar** - Datos horarios por ubicación geográfica (NASA POWER)
 - 🛸 **Rastreo ISS** - Posición orbital en tiempo real con mapa interactivo
 - 🌙 **Datos Lunares** - Fases, salida y puesta (Met.no)
-- 🌊 **Oleaje Marino** - Altura, periodo, componentes (Open-Meteo Marine)
 - 🔐 **Autenticación** - Con sesión persistida en sessionStorage
 - 📊 **Visualizaciones** - Gráficos interactivos con Recharts
 - 🗺️ **Mapas** - Renderizado con MapLibre GL
@@ -69,7 +68,6 @@ src/
 | **NASA POWER** | Irradiancia solar | Por demanda |
 | **Where The ISS At** | Órbita ISS | 2s |
 | **Met.no** | Datos lunares | Por demanda |
-| **Open-Meteo Marine** | Oleaje marino | Por demanda |
 | **Open-Meteo Geocoding** | Búsqueda de ubicaciones | Por demanda |
 
 ### Endpoints Principales
@@ -100,12 +98,6 @@ https://api.met.no/weatherapi/sunrise/3.0/moon
 Parámetros: lat, lon, date, offset
 ```
 
-**Open-Meteo Marine**
-```
-https://marine-api.open-meteo.com/v1/marine
-Parámetros: latitude, longitude, hourly, timezone, cell_selection
-```
-
 **Open-Meteo Geocoding**
 ```
 https://geocoding-api.open-meteo.com/v1/search
@@ -121,7 +113,6 @@ Parámetros: name, count, language, format
 | `/solar` | Solar Data | Irradiancia solar por ubicación |
 | `/observatory` | Observatory | Rastreo y órbita ISS |
 | `/moon` | Moon | Información lunar |
-| `/marine` | Marine | Datos oceanográficos |
 | `/explore` | Explore | Modo exploración con mapas |
 
 **Nota:** Todas las rutas excepto `/` requieren autenticación.
@@ -142,7 +133,6 @@ Parámetros: name, count, language, format
 - `SolarCompareCard` - Comparativa de irradiancia
 - `SolarTrendCard` - Tendencias solares
 - `IssMap` - Mapa orbital con trayectoria
-- `MarineCompareGrid` - Comparativa de oleaje
 
 ### Componentes de UI
 - `ParticleField` - Fondo animado
@@ -160,7 +150,6 @@ Parámetros: name, count, language, format
 | ISS Position | 2 segundos | setInterval |
 | NASA Power | Por demanda | onClick |
 | Moon Data | Por demanda | onClick |
-| Marine Data | Por demanda | onClick |
 
 ## 💾 Persistencia
 
