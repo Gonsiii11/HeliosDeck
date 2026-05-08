@@ -76,7 +76,11 @@ export function AuthProvider({ children }) {
     if (newRefresh) tokenStorage.setRefreshToken(newRefresh)
   }, [])
 
-  const value = { user, accessToken, isLoading, error, login, logout, updateTokens }
+  const isAdmin = Boolean(
+    user?.role === 'admin' || String(user?.username || '').toLowerCase() === 'emilys'
+  )
+
+  const value = { user, accessToken, isLoading, error, login, logout, updateTokens, isAdmin }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 

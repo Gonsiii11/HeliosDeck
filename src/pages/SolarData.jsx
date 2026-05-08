@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import GlobalFiltersBar from '../components/common/GlobalFiltersBar'
+import LocationSelector from '../components/common/LocationSelector'
 import SolarCompareCard from '../components/common/SolarCompareCard'
 import { useFilters } from '../contexts/FiltersContext'
 
@@ -15,7 +15,7 @@ const SolarData = () => {
       transition={{ duration: 0.4 }}
       className="space-y-6"
     >
-      <GlobalFiltersBar />
+      <LocationSelector />
 
       <header className="space-y-2">
         <p className="text-label font-label uppercase tracking-widest text-on-surface-variant">

@@ -6,25 +6,33 @@ const formatDate = (date) => date.toISOString().slice(0, 10).replace(/-/g, '')
 
 const getLastCompleteUtcDayRange = (daysBack = 1) => {
   const now = new Date()
-  const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
-  end.setUTCDate(end.getUTCDate() - daysBack)
+  const day = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+  day.setUTCDate(day.getUTCDate() - daysBack)
 
-  const start = new Date(end)
-  start.setUTCDate(start.getUTCDate() - 1)
-
-  return { start, end }
+  return { start: new Date(day), end: new Date(day) }
 }
 
-const buildPoints = (series) =>
-  Object.entries(series)
+const buildPoints = (series) => {
+  const entries = Object.entries(series)
     .map(([key, value]) => ({
       key,
       time: `${key.slice(8, 10)}:00`,
       value: Number(value),
     }))
-    .filter((entry) => Number.isFinite(entry.value) && entry.value > -900)
     .sort((a, b) => a.key.localeCompare(b.key))
-    .map(({ time, value }) => ({ time, value }))
+
+  const validCount = entries.reduce(
+    (count, entry) => count + (Number.isFinite(entry.value) && entry.value > -900 ? 1 : 0),
+    0
+  )
+
+  const points = entries.map((entry) => ({
+    time: entry.time,
+    value: Number.isFinite(entry.value) && entry.value > -900 ? entry.value : 0,
+  }))
+
+  return { points, validCount }
+}
 
 const getCacheKey = ({ latitude, longitude }) =>
   `${CACHE_PREFIX}:${Number(latitude).toFixed(2)}:${Number(longitude).toFixed(2)}`
@@ -74,9 +82,9 @@ export const fetchNasaIrradiance = async ({ latitude = 0, longitude = 0 } = {}) 
 
     const payload = await response.json()
     const series = payload?.properties?.parameter?.[PARAM] || {}
-    const points = buildPoints(series)
+    const { points, validCount } = buildPoints(series)
 
-    if (points.length > 0) {
+    if (validCount > 0) {
       const result = { points, latitude, longitude }
       writeCache(cacheKey, result)
       return result

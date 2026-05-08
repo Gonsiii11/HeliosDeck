@@ -8,6 +8,8 @@ import SolarData from '../pages/SolarData'
 import Observatory from '../pages/Observatory'
 import Moon from '../pages/Moon'
 import Explore from '../pages/Explore'
+import Admin from '../pages/Admin'
+import AdminRoute from '../components/common/AdminRoute'
 
 const AppRoutes = () => {
   const location = useLocation()
@@ -27,6 +29,14 @@ const AppRoutes = () => {
         <Route path="/observatory" element={<Observatory />} />
         <Route path="/moon" element={<Moon />} />
         <Route path="/explore" element={<Explore />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          }
+        />
       </Route>
       <Route path="*" element={<Login />} />
     </Routes>

@@ -2,14 +2,7 @@ import React from 'react'
 import { useFilters } from '../../contexts/FiltersContext'
 import LocationSelector from './LocationSelector'
 
-const TIME_RANGES = [
-  { value: '6h', label: '6H' },
-  { value: '24h', label: '24H' },
-  { value: '48h', label: '48H' },
-  { value: '7d', label: '7D' },
-]
-
-const GlobalFiltersBar = () => {
+const GlobalFiltersBar = ({ showTimeRange = true, showSources = true }) => {
   const { timeRange, setTimeRange, sources, toggleSource } = useFilters()
 
   return (
@@ -31,15 +24,22 @@ const GlobalFiltersBar = () => {
               Persistidos en URL y sessionStorage
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {TIME_RANGES.map((item) => (
+          
+        </div>
+
+        {showSources ? (
+          <div className="relative mt-sm flex flex-wrap gap-2">
+            {[
+              { key: 'noaa', label: 'NOAA' },
+              { key: 'nasa', label: 'NASA' },
+            ].map((item) => (
               <button
-                key={item.value}
+                key={item.key}
                 type="button"
-                onClick={() => setTimeRange(item.value)}
+                onClick={() => toggleSource(item.key)}
                 className={`rounded-full border px-2 py-1 text-[10px] uppercase tracking-widest transition ${
-                  timeRange === item.value
-                    ? 'border-primary bg-primary/10 text-primary'
+                  sources[item.key]
+                    ? 'border-secondary bg-secondary/10 text-secondary'
                     : 'border-white/10 bg-white/5 text-on-surface-variant hover:border-white/30'
                 }`}
               >
@@ -47,27 +47,7 @@ const GlobalFiltersBar = () => {
               </button>
             ))}
           </div>
-        </div>
-
-        <div className="relative mt-sm flex flex-wrap gap-2">
-          {[
-            { key: 'noaa', label: 'NOAA' },
-            { key: 'nasa', label: 'NASA' },
-          ].map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              onClick={() => toggleSource(item.key)}
-              className={`rounded-full border px-2 py-1 text-[10px] uppercase tracking-widest transition ${
-                sources[item.key]
-                  ? 'border-secondary bg-secondary/10 text-secondary'
-                  : 'border-white/10 bg-white/5 text-on-surface-variant hover:border-white/30'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+        ) : null}
       </div>
 
       <LocationSelector />

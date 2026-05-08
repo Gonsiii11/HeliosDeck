@@ -17,6 +17,21 @@ const getPhaseLabel = (angle) => {
   return 'Luna nueva'
 }
 
+const getPhaseEmoji = (angle) => {
+  if (!Number.isFinite(angle)) return '🌙'
+  const normalized = ((angle % 360) + 360) % 360
+
+  if (normalized < 22.5) return '🌑'
+  if (normalized < 67.5) return '🌒'
+  if (normalized < 112.5) return '🌓'
+  if (normalized < 157.5) return '🌔'
+  if (normalized < 202.5) return '🌕'
+  if (normalized < 247.5) return '🌖'
+  if (normalized < 292.5) return '🌗'
+  if (normalized < 337.5) return '🌘'
+  return '🌑'
+}
+
 const formatTime = (value) => (value ? new Date(value).toLocaleString() : '--')
 
 const Moon = () => {
@@ -88,7 +103,10 @@ const Moon = () => {
           <div className="space-y-3 text-body-sm font-body-sm text-on-surface-variant">
             <div className="flex items-center justify-between">
               <span>Fase</span>
-              <span className="text-on-surface">{getPhaseLabel(status?.moonphase)}</span>
+              <span className="flex items-center gap-2 text-on-surface">
+                <span aria-hidden="true">{getPhaseEmoji(status?.moonphase)}</span>
+                <span>{getPhaseLabel(status?.moonphase)}</span>
+              </span>
             </div>
             <div className="flex items-center justify-between">
               <span>Angulo fase</span>
